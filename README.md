@@ -22,6 +22,21 @@ the sole purpose of being able to track the source of requests in the brokers.
 
 To build this project JDK 1.8 and Apache Maven is required.
 
+To start a local instance, docker is required.
+
+**Scripts**
+* clean - clears build artifacts
+* build - builds artifacts
+* test - runs unit and integration tests
+* validate - analyzes source code and javadoc
+* start - starts localhost instance
+* stop - stops localhost instance
+
+```bash
+./clean && ./build && ./test && ./validate && KAFKA_HOSTS="..." KAFKA_TOPICS="..." ./start
+```
+
+
 ### License
 
 Copyright Dansk Bibliotekscenter a/s. Licensed under GPLv3.
