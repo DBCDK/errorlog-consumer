@@ -3,7 +3,7 @@
  * See license text in LICENSE.txt
  */
 
-package dk.dbc.monitoring;
+package dk.dbc.monitoring.errorlog;
 
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
