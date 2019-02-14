@@ -1,7 +1,7 @@
 echo "### Validating errorlog-consumer project ###"
 
 exit_status=0
-mvn -D maven.javadoc.failOnWarnings=true javadoc:javadoc || exit_status=$?
+mvn -D sourcepath=src/main/java -D maven.javadoc.failOnWarnings=true javadoc:javadoc || exit_status=$?
 mvn pmd:check || exit_status=$?
 mvn findbugs:check || exit_status=$?
 
