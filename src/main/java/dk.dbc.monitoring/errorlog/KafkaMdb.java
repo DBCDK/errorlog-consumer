@@ -5,12 +5,16 @@
 
 package dk.dbc.monitoring.errorlog;
 
+import dk.dbc.monitoring.errorlog.model.LogEvent;
+import dk.dbc.monitoring.errorlog.model.LogEventMapper;
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.event.Level;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import java.nio.charset.StandardCharsets;
 
 @MessageDriven(activationConfig = {
     @ActivationConfigProperty(propertyName = "clientId",
@@ -35,9 +39,16 @@ import javax.ejb.MessageDriven;
             propertyValue = "3000"),
 })
 public class KafkaMdb implements KafkaListener {
+    private static final LogEventMapper LOG_EVENT_MAPPER = new LogEventMapper();
+
     @OnRecord
     public void onMessage(ConsumerRecord record) {
-        // TODO: 13-02-19 filter error logs only and do something intelligent with them
-        System.out.println("Got message " + record);
+        final LogEvent logEvent = LOG_EVENT_MAPPER.unmarshall(
+                ((String) record.value()).getBytes(StandardCharsets.UTF_8));
+
+        if (logEvent.getLevel() != null && logEvent.getLevel() == Level.ERROR) {
+            // TODO: 14-02-19 persist error log events
+            System.out.println(logEvent);
+        }
     }
 }
