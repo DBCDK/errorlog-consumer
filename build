@@ -1,0 +1,14 @@
+case "$1" in
+    docker)
+        echo "### building errorlog-consumer docker ###"
+        docker build -f src/main/docker/Dockerfile . -t errorlog-consumer || exit 1
+        ;;
+
+    *)
+        echo "### building errorlog-consumer project ###"
+        echo "### Look for build artifacts in target/ ###"
+
+        mvn package -Dmaven.test.skip=true || exit 1
+        ;;
+esac
+

@@ -1,0 +1,3 @@
+echo "### testing errorlog-consumer project ###"
+
+mvn verify || exit 1

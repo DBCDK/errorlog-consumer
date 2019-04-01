@@ -1,0 +1,6 @@
+echo "### cleaning errorlog-consumer project ###"
+
+mvn clean
+git pull --ff-only
+docker rm -f errorlog-consumer &>/dev/null || true
+exit 0
