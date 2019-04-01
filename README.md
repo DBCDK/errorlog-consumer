@@ -14,7 +14,8 @@ database.
 * KAFKA_GROUP_ID name of the consumer group this consumer belongs to.
 * KAFKA_CLIENT_ID identifier of a consumer that is passed to a Kafka broker with every request, with 
 the sole purpose of being able to track the source of requests in the brokers.
-* NUM_WORKERS number of pooled MDBs handling incoming messages (in case the 32 default is not enough). 
+* NUM_WORKERS number of pooled MDBs handling incoming messages (in case the 32 default is not enough).
+* ERRORLOG_DB database URL (USER:PASSWORD@HOST:PORT/DBNAME) of the underlying errorlog store.
 
 ### Development
 
