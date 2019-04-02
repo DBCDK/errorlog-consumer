@@ -13,6 +13,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.event.Level;
 
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import java.nio.charset.StandardCharsets;
 
@@ -41,14 +42,15 @@ import java.nio.charset.StandardCharsets;
 public class KafkaMdb implements KafkaListener {
     private static final LogEventMapper LOG_EVENT_MAPPER = new LogEventMapper();
 
+    @EJB ErrorLog errorLog;
+
     @OnRecord
     public void onMessage(ConsumerRecord record) {
         final LogEvent logEvent = LOG_EVENT_MAPPER.unmarshall(
                 ((String) record.value()).getBytes(StandardCharsets.UTF_8));
 
         if (logEvent.getLevel() != null && logEvent.getLevel() == Level.ERROR) {
-            // TODO: 14-02-19 persist error log events
-            System.out.println(logEvent);
+            errorLog.persist(logEvent.toErrorLogEntity());
         }
     }
 }

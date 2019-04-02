@@ -1,3 +1,8 @@
 {
-    "appName": "errorlog-consumer"
+    "appName": "errorlog-consumer",
+    "jdbc": {
+        "jdbc/errorlog": {
+            "url": "${ERRORLOG_DB}"
+        }
+    }
 }

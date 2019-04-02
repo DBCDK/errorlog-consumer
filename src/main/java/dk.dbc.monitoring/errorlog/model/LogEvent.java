@@ -7,10 +7,12 @@ package dk.dbc.monitoring.errorlog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dk.dbc.monitoring.errorlog.ErrorCause;
 import org.slf4j.event.Level;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class has been shamelessly copied from the https://github.com/DBCDK/log-tracer project
@@ -243,5 +245,28 @@ public class LogEvent {
                 ", logger='" + logger + '\'' +
                 ", mdc=" + mdc +
                 '}';
+    }
+
+    public ErrorLogEntity toErrorLogEntity() {
+        final Optional<ErrorCause> errorCause = ErrorCause.of(this);
+        final String cause;
+        if (errorCause.isPresent()) {
+            cause = errorCause.toString();
+        } else {
+            cause = "";
+        }
+
+        return new ErrorLogEntity()
+                .withApp(appID)
+                .withNamespace(env)
+                .withHost(host)
+                .withContainer(taskId)
+                .withMessage(message)
+                .withTeam(team)
+                .withLogger(logger)
+                .withCause(cause)
+                .withStacktrace(stacktrace)
+                .withTimeLogged(timestamp)
+                .withContext(mdc);
     }
 }
