@@ -221,11 +221,11 @@ public class LogEvent {
 
         return new ErrorLogEntity()
                 .withApp(appID)
-                .withNamespace(null)
+                .withNamespace(kubernetes.getNamespace())
                 .withHost(host)
                 .withContainer(taskId)
                 .withMessage(message)
-                .withTeam(null)
+                .withTeam(kubernetes.getTeam())
                 .withLogger(logger)
                 .withCause(cause)
                 .withStacktrace(stacktrace)
