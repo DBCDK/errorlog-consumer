@@ -49,7 +49,10 @@ public class KafkaMdb implements KafkaListener {
         final LogEvent logEvent = LOG_EVENT_MAPPER.unmarshall(
                 ((String) record.value()).getBytes(StandardCharsets.UTF_8));
 
-        if (logEvent.getLevel() != null && logEvent.getLevel() == Level.ERROR) {
+        if (logEvent.getLevel() != null
+                && logEvent.getLevel() == Level.ERROR
+                && logEvent.getKubernetes() != null
+                && logEvent.getKubernetes().getTeam() != null) {
             errorLog.persist(logEvent.toErrorLogEntity());
         }
     }
