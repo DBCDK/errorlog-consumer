@@ -214,9 +214,9 @@ public class LogEvent {
         final Optional<ErrorCause> errorCause = ErrorCause.of(this);
         final String cause;
         if (errorCause.isPresent()) {
-            cause = errorCause.toString();
+            cause = errorCause.get().toString();
         } else {
-            cause = "";
+            cause = message;
         }
 
         return new ErrorLogEntity()
