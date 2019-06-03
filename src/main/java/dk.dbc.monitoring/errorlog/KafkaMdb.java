@@ -10,8 +10,6 @@ import dk.dbc.monitoring.errorlog.model.LogEventMapper;
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.eclipse.microprofile.metrics.MetricUnits;
-import org.eclipse.microprofile.metrics.annotation.Metered;
 import org.slf4j.event.Level;
 
 import javax.ejb.ActivationConfigProperty;
@@ -47,10 +45,6 @@ public class KafkaMdb implements KafkaListener {
     @EJB ErrorLog errorLog;
 
     @OnRecord
-    @Metered(name = "logEventsConsumed",
-            unit = MetricUnits.PER_SECOND,
-            description = "Metrics to monitor log events consumed.",
-            absolute = true)
     public void onMessage(ConsumerRecord record) {
         final LogEvent logEvent = LOG_EVENT_MAPPER.unmarshall(
                 ((String) record.value()).getBytes(StandardCharsets.UTF_8));
