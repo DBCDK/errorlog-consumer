@@ -7,6 +7,10 @@ database.
 
 ### Configuration
 
+To be eligible for consumption a log entry must be logged with level ERROR
+and the logging application must  define the app.dbc.dk/team label on its
+kubernetes pods.
+
 **Environment variables**
 
 * KAFKA_HOSTS comma-separated list of host and port pairs that are the addresses of the Kafka brokers.
