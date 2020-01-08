@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import dk.dbc.monitoring.errorlog.ErrorCause;
-import org.slf4j.event.Level;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -38,7 +37,7 @@ public class LogEvent {
     @JsonProperty("sys_kubernetes")
     private Kubernetes kubernetes;
 
-    private Level level;
+    private LogEventLevel level;
     private String message;
     private String thread;
     private String logger;
@@ -76,11 +75,11 @@ public class LogEvent {
         this.kubernetes = kubernetes;
     }
 
-    public Level getLevel() {
+    public LogEventLevel getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(LogEventLevel level) {
         this.level = level;
     }
 

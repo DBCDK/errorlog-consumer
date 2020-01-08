@@ -6,11 +6,11 @@
 package dk.dbc.monitoring.errorlog;
 
 import dk.dbc.monitoring.errorlog.model.LogEvent;
+import dk.dbc.monitoring.errorlog.model.LogEventLevel;
 import dk.dbc.monitoring.errorlog.model.LogEventMapper;
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.slf4j.event.Level;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -49,11 +49,19 @@ public class KafkaMdb implements KafkaListener {
         final LogEvent logEvent = LOG_EVENT_MAPPER.unmarshall(
                 ((String) record.value()).getBytes(StandardCharsets.UTF_8));
 
-        if (logEvent.getLevel() != null
-                && logEvent.getLevel() == Level.ERROR
-                && logEvent.getKubernetes() != null
-                && logEvent.getKubernetes().getTeam() != null) {
+        if (isSuitableLogEvent(logEvent)) {
             errorLog.persist(logEvent.toErrorLogEntity());
         }
+    }
+
+    private boolean isSuitableLogEvent(LogEvent logEvent) {
+        return logEvent.getLevel() != null
+                && isSuitableLogLevel(logEvent.getLevel())
+                && logEvent.getKubernetes() != null
+                && logEvent.getKubernetes().getTeam() != null;
+    }
+
+    private boolean isSuitableLogLevel(LogEventLevel level) {
+        return level == LogEventLevel.ERROR || level == LogEventLevel.FATAL;
     }
 }
