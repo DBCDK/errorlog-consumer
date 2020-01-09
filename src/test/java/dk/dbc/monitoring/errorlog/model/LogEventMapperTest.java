@@ -24,7 +24,7 @@ public class LogEventMapperTest {
     @Test
     public void mappings() {
         final String json =
-                "{\"level\":\"INFO\"," +
+                "{\"level\":\"FATAL\"," +
                  "\"sys_nydus_destination\":\"k8s-metascrum-prod\"," +
                  "\"logger\":\"dk.dbc.dataio.sink.batchexchange.ScheduledBatchFinalizerBean\"," +
                  "\"sys_appid\":\"metascrum-prod/dataio-batch-exchange-sink-boblebad-service\"," +
