@@ -7,6 +7,8 @@ package dk.dbc.monitoring.errorlog.model;
 
 public enum LogEventLevel {
     FATAL,
+    STAT,
+    TIMER,
     /* slf4j compatible begin */
     ERROR,
     WARN,
