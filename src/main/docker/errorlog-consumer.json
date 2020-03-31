@@ -2,7 +2,8 @@
     "appName": "errorlog-consumer",
     "jdbc": {
         "jdbc/errorlog": {
-            "url": "${ERRORLOG_DB}"
+            "url": "${ERRORLOG_DB}",
+            "maxSize": 15
         }
     }
 }
