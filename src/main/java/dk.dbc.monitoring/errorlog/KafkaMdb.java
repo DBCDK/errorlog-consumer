@@ -11,6 +11,8 @@ import dk.dbc.monitoring.errorlog.model.LogEventMapper;
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -40,7 +42,9 @@ import java.nio.charset.StandardCharsets;
             propertyValue = "3000"),
 })
 public class KafkaMdb implements KafkaListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaMdb.class);
     private static final LogEventMapper LOG_EVENT_MAPPER = new LogEventMapper();
+    private static final int TICK_INTERVAL = 250_000;
 
     @EJB ErrorLog errorLog;
 
@@ -51,6 +55,10 @@ public class KafkaMdb implements KafkaListener {
 
         if (isSuitableLogEvent(logEvent)) {
             errorLog.persist(logEvent.toErrorLogEntity());
+        }
+
+        if (record.offset() % TICK_INTERVAL == 0) {
+            LOGGER.info("consumed offset {} with timestamp {}", record.offset(), logEvent.getTimestamp());
         }
     }
 
