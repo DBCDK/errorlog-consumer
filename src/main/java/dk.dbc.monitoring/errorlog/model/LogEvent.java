@@ -7,19 +7,9 @@ package dk.dbc.monitoring.errorlog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import dk.dbc.monitoring.errorlog.ErrorCause;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -232,7 +222,6 @@ public class LogEvent {
                 .withContext(mdc);
     }
 
-    @JsonDeserialize(using = KubernetesDeserializer.class)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Kubernetes {
         private String namespace;
@@ -247,7 +236,7 @@ public class LogEvent {
         }
 
         public String getTeam() {
-            return labels.get("app.dbc.dk/team");
+            return labels.get("app_dbc_dk/team");
         }
 
         public Map<String, String> getLabels() {
@@ -289,44 +278,6 @@ public class LogEvent {
                     "namespace='" + namespace + '\'' +
                     ", labels=" + labels +
                     '}';
-        }
-    }
-
-    public static class KubernetesDeserializer extends JsonDeserializer<Kubernetes> {
-        @Override
-        public Kubernetes deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                throws IOException {
-            final Kubernetes kubernetes = new Kubernetes();
-            final JsonNode kubernetesNode = jsonParser.getCodec().readTree(jsonParser);
-            final JsonNode namespaceNode = kubernetesNode.get("namespace");
-            if (namespaceNode != null) {
-                kubernetes.setNamespace(namespaceNode.asText());
-            }
-            final Map<String, String> labels = new HashMap<>();
-            final JsonNode labelsNode = kubernetesNode.get("labels");
-            if (labelsNode != null) {
-                readNested(labelsNode, 0, labels, new LinkedList<>());
-                kubernetes.setLabels(labels);
-            }
-            return kubernetes;
-        }
-
-        private void readNested(JsonNode node, int depth, Map<String, String> labels, LinkedList<String> nameAcc) {
-            final Iterator<String> fieldNames = node.fieldNames();
-            while (fieldNames.hasNext()) {
-                final String fieldName = fieldNames.next();
-                final JsonNode fieldNode = node.get(fieldName);
-                if (nameAcc.size() > depth) {
-                    nameAcc.removeLast();
-                }
-                nameAcc.add(fieldName);
-                if (fieldNode.getNodeType() == JsonNodeType.STRING) {
-                    labels.put(String.join(".", nameAcc), fieldNode.asText());
-                    nameAcc.removeLast();
-                } else if (fieldNode.getNodeType() == JsonNodeType.OBJECT) {
-                    readNested(fieldNode, depth+1, labels, nameAcc);
-                }
-            }
         }
     }
 }
