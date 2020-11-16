@@ -48,16 +48,7 @@ public class LogEventMapperTest {
                             "\"network-policy-postgres-outgoing\":\"yes\"," +
                             "\"network-policy-payara-incoming\":\"yes\"," +
                             "\"network-policy-mq-outgoing\":\"yes\"," +
-                            "\"app\":{" +
-                                "\"value\":\"dataio-batch-exchange-sink-boblebad-service\"," +
-                                "\"dbc\":{" +
-                                    "\"dk/team\":\"metascrum\"}," +
-                                "\"kubernetes\":{" +
-                                    "\"io/instance\":\"boblebad\"," +
-                                    "\"io/name\":\"batch-exchange-sink\"," +
-                                    "\"io/component\":\"service\"," +
-                                    "\"io/part-of\":\"dataio\"}" +
-                            "}," +
+                            "\"app_dbc_dk/team\": \"metascrum\"," +
                             "\"pod-template-hash\":\"5545b64558\"" +
                         "}," +
                         "\"namespace\":\"metascrum-prod\"," +
