@@ -225,7 +225,7 @@ public class LogEvent {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Kubernetes {
         private String namespace;
-        private Map<String, String> labels;
+        private Map<String, Object> labels;
 
         public String getNamespace() {
             return namespace;
@@ -236,14 +236,14 @@ public class LogEvent {
         }
 
         public String getTeam() {
-            return labels.get("app_dbc_dk/team");
+            return (String) labels.get("app_dbc_dk/team");
         }
 
-        public Map<String, String> getLabels() {
+        public Map<String, Object> getLabels() {
             return labels;
         }
 
-        public void setLabels(Map<String, String> labels) {
+        public void setLabels(Map<String, Object> labels) {
             this.labels = labels;
         }
 
