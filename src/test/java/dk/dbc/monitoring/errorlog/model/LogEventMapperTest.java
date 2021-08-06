@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LogEventMapperTest {
     private final LogEventMapper logEventMapper = new LogEventMapper();
@@ -75,5 +75,18 @@ public class LogEventMapperTest {
 
         final LogEvent logEvent = logEventMapper.unmarshall(json.getBytes(StandardCharsets.UTF_8));
         assertThat("team",logEvent.getKubernetes().getTeam(), is(nullValue()));
+    }
+
+    @Test
+    public void nonSlf4jLogLevel() {
+        final String json =
+                "{\"level\":\"WARNING\"," +
+                "\"sys_nydus_destination\":\"k8s-metascrum-prod\"," +
+                "\"message\":\"a message\"," +
+                "\"@timestamp\":\"2019-05-20T08:48:00.001+02:00\"}";
+        final LogEvent logEvent = logEventMapper.unmarshall(json.getBytes(StandardCharsets.UTF_8));
+        assertThat("marshall->unmarshall",
+                logEventMapper.unmarshall(logEventMapper.marshall(logEvent).getBytes(StandardCharsets.UTF_8)),
+                is(logEvent));
     }
 }

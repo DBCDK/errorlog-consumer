@@ -9,6 +9,7 @@ public enum LogEventLevel {
     FATAL,
     STAT,
     TIMER,
+    WARNING,
     /* slf4j compatible begin */
     ERROR,
     WARN,
