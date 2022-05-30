@@ -50,7 +50,7 @@ pipeline {
 		stage("docker build") {
 			steps {
 				script {
-					def image = docker.build("docker-io.dbc.dk/errorlog-consumer:${env.BRANCH_NAME}-${env.BUILD_NUMBER}",
+					def image = docker.build("docker-metascrum.artifacts.dbccloud.dk/errorlog-consumer:${env.BRANCH_NAME}-${env.BUILD_NUMBER}",
 						"-f src/main/docker/Dockerfile --pull --no-cache .")
 					image.push()
 				}
