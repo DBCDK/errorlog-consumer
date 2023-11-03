@@ -10,13 +10,13 @@ import dk.dbc.monitoring.errorlog.model.LogEventLevel;
 import dk.dbc.monitoring.errorlog.model.LogEventMapper;
 import fish.payara.cloud.connectors.kafka.api.KafkaListener;
 import fish.payara.cloud.connectors.kafka.api.OnRecord;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.EJB;
+import jakarta.ejb.MessageDriven;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.EJB;
-import javax.ejb.MessageDriven;
 import java.nio.charset.StandardCharsets;
 
 @MessageDriven(activationConfig = {
