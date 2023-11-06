@@ -5,17 +5,14 @@
 
 package dk.dbc.monitoring.errorlog.rest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-import java.util.HashSet;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Application;
+
 import java.util.Set;
 
 @ApplicationPath("/")
 public class ErrorLogConsumer extends Application {
-    private static final Set<Class<?>> classes = new HashSet<>();
-    static {
-        classes.add(Status.class);
-    }
+    private static final Set<Class<?>> classes = Set.of(Status.class);
 
     @Override
     public Set<Class<?>> getClasses() {

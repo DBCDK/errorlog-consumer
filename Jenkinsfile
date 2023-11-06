@@ -7,6 +7,7 @@ pipeline {
 	tools {
 		// refers to the name set in manage jenkins -> global tool configuration
 		maven "Maven 3"
+		jdk 'jdk11'
 	}
 	triggers {
 		pollSCM("H/03 * * * *")
@@ -23,7 +24,7 @@ pipeline {
 		}
 		stage("verify") {
 			steps {
-				sh "mvn -D sourcepath=src/main/java verify pmd:pmd javadoc:aggregate"
+				sh "mvn -B -D sourcepath=src/main/java verify pmd:pmd javadoc:aggregate"
 				junit "target/surefire-reports/TEST-*.xml"
 			}
 		}
